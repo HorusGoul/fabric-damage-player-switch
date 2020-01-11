@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "damagetp",
+  "version": "${version}",
+
+  "name": "Switch Players on Damage",
+  "description": "This mod will switch players positions when one of them suffers damage",
+  "authors": [
+    "Horus Lugo López"
+  ],
+  "contact": {
+    "homepage": "https://horuslugo.com/"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/damagetp/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+  },
+  "mixins": [
+    "damagetp.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.3",
+    "minecraft": "1.15.x"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
