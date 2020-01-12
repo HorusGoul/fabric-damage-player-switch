@@ -5,7 +5,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.TickScheduler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -29,7 +28,7 @@ public class TeleportOnDamagePlayerMixin {
 		do {
 			int index = (int) Math.floor(Math.random() * players.size());
 			otherPlayer = players.get(index);
-		} while(otherPlayer == self);
+		} while (otherPlayer == self);
 
 		BlockPos selfPos = self.getBlockPos();
 		ListTag selfInventory = self.inventory.serialize(new ListTag());
@@ -39,28 +38,18 @@ public class TeleportOnDamagePlayerMixin {
 
 		self.setInvulnerable(true);
 		otherPlayer.setInvulnerable(true);
-		self.inventory.deserialize(otherPlayerInventory);
-		otherPlayer.inventory.deserialize(selfInventory);
 
-		self.teleport(
-				Util.center(otherPlayerPos.getX()),
-				256,
-				Util.center(otherPlayerPos.getZ())
-		);
+		if (self.getHealth() > 0.0f && otherPlayer.getHealth() > 0.0f) {
+			self.inventory.deserialize(otherPlayerInventory);
+			otherPlayer.inventory.deserialize(selfInventory);
+		}
 
-		otherPlayer.teleport(
-				Util.center(selfPos.getX()),
-				Util.center(selfPos.getY()),
-				Util.center(selfPos.getZ())
-		);
+		self.teleport(Util.center(otherPlayerPos.getX()), 256, Util.center(otherPlayerPos.getZ()));
 
-		self.teleport(
-				Util.center(otherPlayerPos.getX()),
-				Util.center(otherPlayerPos.getY()),
-				Util.center(otherPlayerPos.getZ())
-		);
+		otherPlayer.teleport(Util.center(selfPos.getX()), Util.center(selfPos.getY()), Util.center(selfPos.getZ()));
 
-
+		self.teleport(Util.center(otherPlayerPos.getX()), Util.center(otherPlayerPos.getY()),
+				Util.center(otherPlayerPos.getZ()));
 
 		PlayerEntity finalOtherPlayer = otherPlayer;
 
